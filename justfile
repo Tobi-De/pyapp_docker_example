@@ -163,9 +163,9 @@ buildbin-docker:
     export CARGO_BUILD_TARGET="x86_64-linux"
     export PYAPP_DISTRIBUTION_VARIANT="v1"
     docker build -t build-bin-container . -f deploy/Dockerfile.binary
-    container_id=$(docker run build-bin-container sh -c "just buildwheel && just buildbin")
-    docker cp ${container_id}:/app/dist ./dist
-    docker rm ${container_id}
+    docker rm -f final-build && docker run -d --name final-build build-bin-container sh -c "sleep 1000"
+    docker cp final-build:/app/dist ./dist
+    docker rm -f final-build
 
 
 # Run a command within the dev environnment

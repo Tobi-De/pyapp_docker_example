@@ -30,7 +30,7 @@ RUN apt update \
 ## ---------------------------------------------------------------------------------- ##
 ## ------------------------- Python build base -------------------------------------- ##
 ## ---------------------------------------------------------------------------------- ##
-FROM python-base AS build-base
+FROM python-base
 # ARG PDM_INSTALL_ARGS=""
 # ENV PDM_INSTALL_ARGS="${PDM_INSTALL_ARGS}" \
 #   GRPC_PYTHON_BUILD_WITH_CYTHON=1 \
