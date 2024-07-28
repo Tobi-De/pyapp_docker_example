@@ -1,0 +1,288 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = [
+  "hatchling",
+]
+
+[project]
+name = "pyapp-docker-example"
+version = "0.0.1"
+description = ""
+readme = "README.md"
+authors = [ { name = "Tobi DEGNON", email = "tobidegnon@proton.me" } ]
+requires-python = ">=3.11"
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+  "boto3",
+  "crispy-tailwind",
+  "diskcache",
+  "django[argon2]",
+  "django-allauth",
+  "django-anymail[amazon-ses]",
+  "django-compressor",
+  "django-extensions",
+  "django-fastdev",
+  "django-health-check",
+  "django-htmx",
+  "django-lifecycle",
+  "django-model-utils",
+  "django-q-registry",
+  "django-q2",
+  "django-storages[s3]",
+  "django-tailwind-cli",
+  "django-template-partials",
+  "environs[django]",
+  "gunicorn",
+  "heroicons[django]",
+  "pillow",
+  "psycopg[binary]",
+  "sentry-sdk",
+  "whitenoise",
+]
+
+[tool.hatch.env]
+requires = [
+  "hatch-pip-compile>=1.11.2",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+exclude = [
+  "static",
+]
+artifacts = [
+  "staticfiles",
+]
+
+[tool.hatch.build.targets.binary]
+
+[[tool.hatch.envs.all.matrix]]
+python = [ "3.11", "3.12" ]
+
+[tool.hatch.envs.default]
+type = "pip-compile"
+pip-compile-constraint = "default"
+pip-compile-installer = "uv"
+pip-compile-resolver = "uv"
+lock-filename = "requirements.txt"
+
+[tool.hatch.envs.dev]
+dependencies = [
+  "django-browser-reload",
+  "django-debug-toolbar",
+  "dj-notebook>=0.6.1",
+  "Werkzeug[watchdog]>=3.0.1",
+  "django-stubs[compatible-mypy]",
+  "coverage[toml]>=6.5",
+  "pre-commit",
+  "pytest",
+  "pytest-django",
+  "pytest-sugar",
+  "pytest-xdist",
+  "falco-cli",
+  "django-watchfiles",
+  "git-cliff",
+  "bump-my-version",
+]
+lock-filename = "requirements-dev.txt"
+
+[tool.hatch.envs.docs]
+dependencies = [
+  "furo",
+  "sphinx",
+  "sphinx-autobuild",
+  "sphinx-copybutton",
+  "sphinx-design",
+  "myst-parser",
+]
+lock-filename = "docs/requirements.txt"
+
+[tool.ruff]
+lint.extend-ignore = [
+  "EM101",
+  "I001",
+  "I002",
+  "RUF012",
+  "TID252",
+  "TRY003",
+]
+lint.extend-per-file-ignores."*/migrations/*" = [
+  "E501",
+]
+lint.extend-per-file-ignores."deploy/*" = [
+  "INP001",
+]
+lint.extend-per-file-ignores."docs/conf.py" = [
+  "A001",
+  "INP001",
+]
+lint.extend-per-file-ignores."tests/**/*" = [
+  "ARG001",
+  "PLR2004",
+  "S101",
+  "TID252",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "pyapp_docker_example.settings"
+addopts = "--reuse-db -n auto"
+norecursedirs = ".* bin build dist *.egg htmlcov logs node_modules static templates venv"
+python_files = "tests.py test_*.py *_tests.py"
+
+[tool.coverage.run]
+source_pkgs = [ "pyapp_docker_example", "tests" ]
+branch = true
+parallel = true
+
+[tool.coverage.paths]
+pyapp_docker_example = [ "*/pyapp_docker_example/pyapp_docker_example" ]
+tests = [ "tests", "*/pyapp_docker_example/tests" ]
+
+[tool.coverage.report]
+exclude_lines = [ "no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:" ]
+
+[tool.bumpversion]
+current_version = "0.0.1"
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+serialize = [
+  "{major}.{minor}.{patch}",
+]
+search = "{current_version}"
+replace = "{new_version}"
+regex = false
+ignore_missing_version = false
+ignore_missing_files = false
+tag = true
+sign_tags = false
+tag_name = "v{new_version}"
+tag_message = "Bump version: {current_version} → {new_version}"
+allow_dirty = false
+commit = true
+message = "Bump version: {current_version} → {new_version}"
+commit_args = "--no-verify"
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
+
+[tool.mypy]
+python_version = "3.11"
+check_untyped_defs = true
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+plugins = [ "mypy_django_plugin.main" ]
+
+[[tool.mypy.overrides]]
+ignore_errors = true
+module = [
+  "allauth.*",
+  "boto3.*",
+  "botocore.*",
+  "debug_toolbar.*",
+  "django_filters.*",
+  "django_q.*",
+  "djclick.*",
+  "gunicorn.*",
+  "health_check.*",
+  "*.migrations.*",
+]
+
+[tool.django-stubs]
+django_settings_module = "pyapp_docker_example.settings"
+
+[tool.djlint]
+custom_blocks = "partialdef"
+blank_line_after_tag = "endblock,endpartialdef,extends,load"
+blank_line_before_tag = "block,partialdef"
+close_void_tags = true
+format_css = true
+format_js = true
+# TODO: remove T002 when fixed https://github.com/Riverside-Healthcare/djLint/issues/687
+ignore = "H006,H030,H031,T002,H021"
+include = "H017,H035"
+indent = 2
+max_line_length = 120
+profile = "django"
+
+[tool.djlint.css]
+indent_size = 2
+
+[tool.djlint.js]
+indent_size = 2
+
+[tool.falco]
+htmx = "pyapp_docker_example/static/vendors/htmx/htmx.min.js:2.0.1"
+revision = "793bb2c94dae6204eb37fc7ab8305a948de63021"
+skip = [ "playground.ipynb", "README.md" ]
+blueprint = "https://github.com/Tobi-De/falco_blueprint_basic.git"
+
+[tool.falco.work]
+server = "python manage.py migrate && python manage.py runserver {address}"
+tailwind = "python manage.py tailwind watch"
+worker = "python manage.py qcluster"
+
+[tool.falco.crud]
+utils-path = "pyapp_docker_example/core"
+
+[tool.mypy_django_plugin]
+ignore_missing_model_attributes = true
+
+[tool.git-cliff.changelog]
+header = """
+# Changelog\n
+All notable changes to this project will be documented in this file.\n
+"""
+body = """
+{% if version %}\
+    ## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
+{% else %}\
+    ## [unreleased]
+{% endif %}\
+{% for group, commits in commits | group_by(attribute="group") %}
+    ### {{ group | striptags | trim | upper_first }}
+    {% for commit in commits %}
+        - {% if commit.scope %}*({{ commit.scope }})* {% endif %}\
+            {% if commit.breaking %}[**breaking**] {% endif %}\
+            {{ commit.message | upper_first }}\
+    {% endfor %}
+{% endfor %}\n
+"""
+footer = """
+<!-- generated by git-cliff -->
+"""
+trim = true
+
+[tool.git-cliff.git]
+conventional_commits = true
+filter_unconventional = true
+split_commits = false
+commit_parsers = [
+  { message = "^feat", group = "<!-- 0 -->🚀 Features" },
+  { message = "^fix", group = "<!-- 1 -->🐛 Bug Fixes" },
+  { message = "^doc|^docs", group = "<!-- 3 -->📚 Documentation" },
+  { message = "^perf", group = "<!-- 4 -->⚡ Performance" },
+  { message = "^refactor", group = "<!-- 2 -->🚜 Refactor" },
+  { message = "^style", group = "<!-- 5 -->🎨 Styling" },
+  { message = "^test", group = "<!-- 6 -->🧪 Testing" },
+  { message = "^build", group = "<!-- 7 -->📦 Build" },
+  { message = "^chore\\(release\\): prepare for", skip = true },
+  { message = "^chore\\(deps.*\\)", skip = true },
+  { message = "^chore\\(pr\\)", skip = true },
+  { message = "^chore\\(pull\\)", skip = true },
+  { message = "^chore|^ci", group = "<!-- 8 -->⚙️ Miscellaneous Tasks" },
+  { body = ".*security", group = "<!-- 9 -->🛡️ Security" },
+  { message = "^revert", group = "<!-- 10 -->◀️ Revert" },
+]
+protect_breaking_commits = false
+filter_commits = false
+topo_order = false
+sort_commits = "oldest"

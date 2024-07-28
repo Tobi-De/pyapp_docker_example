@@ -1,0 +1,5 @@
+#!/command/with-contenv execlineb
+
+cd /app
+foreground { python manage.py createsuperuser --noinput }
+python pyapp_docker_example/__main__.py
