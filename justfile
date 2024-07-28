@@ -155,6 +155,19 @@ buildbin:
     export PYAPP_DISTRIBUTION_EMBED="1"
     hatch build -t binary
 
+
+# Build binary in docker
+buildbin-docker:
+    #!/usr/bin/env sh
+    export RUST_BACKTRACE=1
+    export CARGO_BUILD_TARGET="x86_64-linux"
+    export PYAPP_DISTRIBUTION_VARIANT="v1"
+    docker build -t build-bin-container . -f deploy/Dockerfile.binary
+    container_id=$(docker run build-bin-container sh -c "just buildwheel && just buildbin")
+    docker cp ${container_id}:/app/dist ./dist
+    docker rm ${container_id}
+
+
 # Run a command within the dev environnment
 @cmd *ARGS:
     hatch --env dev run {{ ARGS }}
