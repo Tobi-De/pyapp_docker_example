@@ -159,11 +159,11 @@ buildbin:
 # Build binary in docker
 buildbin-docker:
     #!/usr/bin/env sh
-    export RUST_BACKTRACE=1
-    export CARGO_BUILD_TARGET="x86_64-linux"
-    export PYAPP_DISTRIBUTION_VARIANT="v1"
+    #export RUST_BACKTRACE=1
+    #export CARGO_BUILD_TARGET="x86_64-linux"
+    #export PYAPP_DISTRIBUTION_VARIANT="v1"
     docker build -t build-bin-container . -f deploy/Dockerfile.binary
-    docker rm -f final-build && docker run -d --name final-build build-bin-container sh -c "sleep 1000"
+    docker run -d --name final-build build-bin-container sh -c "sleep 1000"
     docker cp final-build:/app/dist ./dist
     docker rm -f final-build
 

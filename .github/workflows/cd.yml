@@ -129,10 +129,16 @@ jobs:
       - name: Build binary
         run: just buildbin
 
+      - name: Get binary name
+        run: |
+          sudo apt-get install -y jq
+          BINARY_NAME=$(hatch project metadata | jq -r '.name')
+          echo "BINARY_NAME=$BINARY_NAME" >> $GITHUB_ENV
+
       - name: Rename
         working-directory: ${{ github.workspace }}
-        run: |-
-          mv dist/binary/pyapp_docker_example* dist/binary/pyapp_docker_example-${{ matrix.job.release_suffix }}
+        run: |
+          mv dist/binary/${{ env.BINARY_NAME }}* dist/binary/${{ env.BINARY_NAME }}-${{ matrix.job.release_suffix }}
 
       - name: Upload built binary package
         uses: actions/upload-artifact@v4
