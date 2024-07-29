@@ -694,7 +694,7 @@ qtconsole==5.5.2
     # via jupyter
 qtpy==2.4.1
     # via qtconsole
-questionary==1.10.0
+questionary==2.0.1
     # via bump-my-version
 rcssmin==1.1.2
     # via
