@@ -36,7 +36,7 @@
 # - whitenoise
 #
 
-alabaster==0.7.16
+alabaster==1.0.0
     # via sphinx
 anyio==4.4.0
     # via
