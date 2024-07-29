@@ -6,7 +6,7 @@ requires = [
 
 [project]
 name = "pyapp-docker-example"
-version = "0.0.1"
+version = "0.1.0"
 description = ""
 readme = "README.md"
 authors = [ { name = "Tobi DEGNON", email = "tobidegnon@proton.me" } ]
@@ -148,7 +148,7 @@ tests = [ "tests", "*/pyapp_docker_example/tests" ]
 exclude_lines = [ "no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:" ]
 
 [tool.bumpversion]
-current_version = "0.0.1"
+current_version = "0.1.0"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
 serialize = [
   "{major}.{minor}.{patch}",
