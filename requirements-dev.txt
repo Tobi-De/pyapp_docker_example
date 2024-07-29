@@ -18,6 +18,7 @@
 # - django-watchfiles
 # - git-cliff
 # - bump-my-version
+# - hatch-pip-compile
 # - boto3
 # - crispy-tailwind
 # - diskcache
@@ -52,6 +53,8 @@ anyio==4.4.0
     #   httpx
     #   jupyter-server
     #   watchfiles
+appnope==0.1.4
+    # via ipykernel
 argon2-cffi==23.1.0
     # via
     #   -c requirements.txt
@@ -86,6 +89,8 @@ autoflake==2.3.1
     # via falco-cli
 babel==2.15.0
     # via jupyterlab-server
+backports-tarfile==1.2.0
+    # via jaraco-context
 beautifulsoup4==4.12.3
     # via nbconvert
 binaryornot==0.4.4
@@ -107,6 +112,8 @@ botocore==1.34.149
     #   s3transfer
 bracex==2.4
     # via wcmatch
+build==1.2.1
+    # via pip-tools
 bump-my-version==0.24.3
     # via hatch.envs.dev
 cappa==0.22.1
@@ -141,8 +148,12 @@ click==8.1.7
     #   cookiecutter
     #   django-typer
     #   djlint
+    #   hatch
+    #   hatch-pip-compile
+    #   pip-tools
     #   rich-click
     #   typer-slim
+    #   userpath
 colorama==0.4.6
     # via djlint
 comm==0.2.2
@@ -286,9 +297,9 @@ django-storages==1.14.4
     # via
     #   -c requirements.txt
     #   hatch.envs.dev
-django-stubs==5.0.3
+django-stubs==5.0.4
     # via hatch.envs.dev
-django-stubs-ext==5.0.3
+django-stubs-ext==5.0.4
     # via django-stubs
 django-tailwind-cli==2.13.0
     # via
@@ -334,6 +345,12 @@ gunicorn==22.0.0
     #   hatch.envs.dev
 h11==0.14.0
     # via httpcore
+hatch==1.12.0
+    # via hatch-pip-compile
+hatch-pip-compile==1.11.2
+    # via hatch.envs.dev
+hatchling==1.25.0
+    # via hatch
 heroicons==2.6.0
     # via
     #   -c requirements.txt
@@ -349,7 +366,10 @@ httpcore==1.0.5
 httpx==0.27.0
     # via
     #   falco-cli
+    #   hatch
     #   jupyterlab
+hyperlink==21.0.0
+    # via hatch
 identify==2.6.0
     # via pre-commit
 idna==3.7
@@ -357,8 +377,11 @@ idna==3.7
     #   -c requirements.txt
     #   anyio
     #   httpx
+    #   hyperlink
     #   jsonschema
     #   requests
+importlib-metadata==8.2.0
+    # via keyring
 iniconfig==2.0.0
     # via pytest
 ipykernel==6.29.5
@@ -379,6 +402,12 @@ isoduration==20.11.0
     # via jsonschema
 isort==5.13.2
     # via falco-cli
+jaraco-classes==3.4.0
+    # via keyring
+jaraco-context==5.3.0
+    # via keyring
+jaraco-functools==4.0.1
+    # via keyring
 jedi==0.19.1
     # via ipython
 jinja2==3.1.4
@@ -455,6 +484,8 @@ jupyterlab-server==2.27.3
     #   notebook
 jupyterlab-widgets==3.0.11
     # via ipywidgets
+keyring==25.2.1
+    # via hatch
 markdown-it-py==3.0.0
     # via rich
 markupsafe==2.1.5
@@ -474,6 +505,10 @@ mdurl==0.1.2
     # via markdown-it-py
 mistune==3.0.2
     # via nbconvert
+more-itertools==10.3.0
+    # via
+    #   jaraco-classes
+    #   jaraco-functools
 mypy==1.11.0
     # via django-stubs
 mypy-extensions==1.0.0
@@ -510,7 +545,10 @@ packaging==24.1
     # via
     #   -c requirements.txt
     #   black
+    #   build
     #   gunicorn
+    #   hatch
+    #   hatchling
     #   ipykernel
     #   jupyter-server
     #   jupyterlab
@@ -535,20 +573,30 @@ pathspec==0.12.1
     # via
     #   black
     #   djlint
+    #   hatchling
 pexpect==4.9.0
-    # via ipython
+    # via
+    #   hatch
+    #   ipython
 pillow==10.4.0
     # via
     #   -c requirements.txt
     #   hatch.envs.dev
+pip==24.2
+    # via pip-tools
+pip-tools==7.4.1
+    # via hatch-pip-compile
 platformdirs==4.2.2
     # via
     #   black
+    #   hatch
     #   jupyter-core
     #   virtualenv
 pluggy==1.5.0
-    # via pytest
-pre-commit==3.7.1
+    # via
+    #   hatchling
+    #   pytest
+pre-commit==3.8.0
     # via hatch.envs.dev
 prometheus-client==0.20.0
     # via jupyter-server
@@ -594,6 +642,10 @@ pygments==2.18.0
     #   nbconvert
     #   qtconsole
     #   rich
+pyproject-hooks==1.1.0
+    # via
+    #   build
+    #   pip-tools
 pytest==8.3.2
     # via
     #   hatch.envs.dev
@@ -676,6 +728,8 @@ rich==13.7.1
     #   cookiecutter
     #   dj-notebook
     #   falco-cli
+    #   hatch
+    #   hatch-pip-compile
     #   rich-click
 rich-click==1.8.3
     # via bump-my-version
@@ -697,12 +751,15 @@ sentry-sdk==2.11.0
     # via
     #   -c requirements.txt
     #   hatch.envs.dev
-setuptools==71.1.0
-    # via jupyterlab
+setuptools==72.0.0
+    # via
+    #   jupyterlab
+    #   pip-tools
 shellingham==1.5.4
     # via
     #   -c requirements.txt
     #   django-typer
+    #   hatch
 six==1.16.0
     # via
     #   -c requirements.txt
@@ -736,10 +793,13 @@ text-unidecode==1.3
     # via python-slugify
 tinycss2==1.3.0
     # via nbconvert
+tomli-w==1.0.0
+    # via hatch
 tomlkit==0.13.0
     # via
     #   bump-my-version
     #   falco-cli
+    #   hatch
 tornado==6.4.1
     # via
     #   ipykernel
@@ -767,6 +827,8 @@ traitlets==5.14.3
     #   nbconvert
     #   nbformat
     #   qtconsole
+trove-classifiers==2024.7.2
+    # via hatchling
 typer-slim==0.12.3
     # via
     #   -c requirements.txt
@@ -803,8 +865,14 @@ urllib3==2.2.2
     #   django-anymail
     #   requests
     #   sentry-sdk
+userpath==1.9.2
+    # via hatch
+uv==0.2.30
+    # via hatch
 virtualenv==20.26.3
-    # via pre-commit
+    # via
+    #   hatch
+    #   pre-commit
 watchdog==4.0.1
     # via werkzeug
 watchfiles==0.22.0
@@ -823,9 +891,15 @@ websocket-client==1.8.0
     # via jupyter-server
 werkzeug==3.0.3
     # via hatch.envs.dev
+wheel==0.43.0
+    # via pip-tools
 whitenoise==6.7.0
     # via
     #   -c requirements.txt
     #   hatch.envs.dev
 widgetsnbextension==4.0.11
     # via ipywidgets
+zipp==3.19.2
+    # via importlib-metadata
+zstandard==0.23.0
+    # via hatch
